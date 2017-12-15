@@ -9,9 +9,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
         df[,pollutant][!is.na(df[,pollutant])]
     }
     
-    setwd(directory)
-    
-    files <- paste(str_pad(id, 3, pad = "0"), '.csv')
+    files <- paste(directory, '/', str_pad(id, 3, pad = "0"), '.csv', sep = "")
     
     all_values <- c()
     

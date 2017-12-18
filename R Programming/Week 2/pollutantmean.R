@@ -1,3 +1,4 @@
+install.packages("stringr", repos='http://cran.us.r-project.org')
 library(stringr);
 
 pollutantmean <- function(directory, pollutant, id = 1:332) {

@@ -1,4 +1,4 @@
-best <- function(state, outcome) {
+rankhospital <- function(state, outcome, num) {
     # Suppress warnings
     warn_level <- getOption('warn')
     options(warn = -1)
@@ -12,15 +12,18 @@ best <- function(state, outcome) {
     
     # Return hospital name with lowest rate
     outcomeColumn <- get_outcomeColumnIndex(outcome)
-    validRows <- which(is_inState(data, state) & (!is.na(get_outcomeNumeric(data, outcomeColumn))))
-    minOutcome <- min(as.numeric(data[validRows,outcomeColumn]))
-    bestHospitals <- which(is_inState(data, state) & get_outcomeNumeric(data, outcomeColumn) == minOutcome)
-    winner <- sort(data[bestHospitals,'Hospital.Name'])[1]
+    
+    # validRows <- which(is_inState(data, state) & (!is.na(get_outcomeNumeric(data, outcomeColumn))))
+    # minOutcome <- min(as.numeric(data[validRows,outcomeColumn]))
+    # bestHospitals <- which(is_inState(data, state) & get_outcomeNumeric(data, outcomeColumn) == minOutcome)
+    # result <- sort(data[bestHospitals,'Hospital.Name'])[1]
+    
+    
     
     # Enable warnings
     options(warn = warn_level)
     
-    winner
+    result
 }
 
 get_outcomeData <- function(fileName) {

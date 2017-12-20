@@ -1,18 +1,12 @@
-best <- function(state, outcome) {
+rankall <- function(outcome, num = "best") {
     
     # Read outcome data
     data <- get_outcomeData("outcome-of-care-measures.csv")
     
-    # Validate state and outcome
+    # Validate outcome
     validate_outcome(outcome)
-    validate_state(unique(data[,'State']), state)
     
-    # Return hospital name with lowest rate
-    outcomeColumn <- get_outcomeColumnIndex(outcome)
-    validRows <- which(is_inState(data, state) & (!is.na(get_outcomeNumeric(data, outcomeColumn))))
-    minOutcome <- min(as.numeric(data[validRows,outcomeColumn]))
-    bestHospitals <- which(is_inState(data, state) & get_outcomeNumeric(data, outcomeColumn) == minOutcome)
-    sort(data[bestHospitals,'Hospital.Name'])[1]
+    
 }
 
 get_outcomeData <- function(fileName) {
@@ -43,6 +37,20 @@ validate_state <- function(all_states, state) {
 is_inState <- function(data, state) {
     data[,'State'] == state
 }
+is_validOutcomeResult <- function(data, col) {
+    !is.na(as.numeric(data[,col]))
+}
 get_outcomeNumeric <- function(data, col) {
     as.numeric(data[,col])
+}
+get_rankRequest <- function(num, nrow) {
+    if (num == "best") {
+        return(1)
+    }
+    else if (num == "worst") {
+        return(nrow)
+    }
+    else {
+        num
+    }
 }

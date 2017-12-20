@@ -1,7 +1,4 @@
-rankhospital <- function(state, outcome, num) {
-    # Suppress warnings
-    warn_level <- getOption('warn')
-    options(warn = -1)
+rankhospital <- function(state, outcome, num = "best") {
     
     # Read outcome data
     data <- get_outcomeData("outcome-of-care-measures.csv")
@@ -13,17 +10,20 @@ rankhospital <- function(state, outcome, num) {
     # Return hospital name with lowest rate
     outcomeColumn <- get_outcomeColumnIndex(outcome)
     
-    # validRows <- which(is_inState(data, state) & (!is.na(get_outcomeNumeric(data, outcomeColumn))))
-    # minOutcome <- min(as.numeric(data[validRows,outcomeColumn]))
-    # bestHospitals <- which(is_inState(data, state) & get_outcomeNumeric(data, outcomeColumn) == minOutcome)
-    # result <- sort(data[bestHospitals,'Hospital.Name'])[1]
+    # Filter the data for that state
+    data <- data[which(is_inState(data, state)),]
     
+    # Filter the data for valid values of the outcome
+    data <- data[which(is_validOutcomeResult(data, outcomeColumn)),]
     
+    # Create numeric column for outcome
+    data[,'OutcomeNumeric'] <- as.numeric(data[,outcomeColumn])
     
-    # Enable warnings
-    options(warn = warn_level)
+    # Get sorting order by outcome, then name
+    ranking <- order(data[,'OutcomeNumeric'], data[,'Hospital.Name'])
     
-    result
+    # Return name of rank
+    data[ranking,'Hospital.Name'][get_rankRequest(num,nrow(data))]
 }
 
 get_outcomeData <- function(fileName) {
@@ -54,6 +54,21 @@ validate_state <- function(all_states, state) {
 is_inState <- function(data, state) {
     data[,'State'] == state
 }
+is_validOutcomeResult <- function(data, col) {
+    !is.na(as.numeric(data[,col]))
+}
 get_outcomeNumeric <- function(data, col) {
     as.numeric(data[,col])
 }
+get_rankRequest <- function(num, nrow) {
+    if (num == "best") {
+        return(1)
+    }
+    else if (num == "worst") {
+        return(nrow)
+    }
+    else {
+        num
+    }
+}
+

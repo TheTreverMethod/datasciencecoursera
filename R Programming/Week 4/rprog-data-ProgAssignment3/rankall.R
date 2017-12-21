@@ -6,7 +6,20 @@ rankall <- function(outcome, num = "best") {
     # Validate outcome
     validate_outcome(outcome)
     
+    # Get the column index for the outcome
+    outcomeColumn <- get_outcomeColumnIndex(outcome)
     
+    # Filter the data for valid values of the outcome
+    data <- data[which(is_validOutcomeResult(data, outcomeColumn)),]
+    
+    # Create numeric column for outcome
+    data[,'OutcomeNumeric'] <- as.numeric(data[,outcomeColumn])
+    
+    # Get sorting order by state, outcome, then name
+    ranking <- order(data[,'State'], data[,'OutcomeNumeric'], data[,'Hospital.Name'])
+    
+    # Sort data
+    data <- data[ranking,]
 }
 
 get_outcomeData <- function(fileName) {
@@ -28,15 +41,7 @@ validate_outcome <- function(outcome) {
         stop("invalid outcome")
     }
 }
-validate_state <- function(all_states, state) {
-    if (!any(all_states == state)) {
-        stop("invalid state")
-    }
-}
 
-is_inState <- function(data, state) {
-    data[,'State'] == state
-}
 is_validOutcomeResult <- function(data, col) {
     !is.na(as.numeric(data[,col]))
 }

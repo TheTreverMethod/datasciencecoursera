@@ -7,7 +7,7 @@ rankhospital <- function(state, outcome, num = "best") {
     validate_outcome(outcome)
     validate_state(unique(data[,'State']), state)
     
-    # Return hospital name with lowest rate
+    # Get the column index for the outcome
     outcomeColumn <- get_outcomeColumnIndex(outcome)
     
     # Filter the data for that state
@@ -22,7 +22,7 @@ rankhospital <- function(state, outcome, num = "best") {
     # Get sorting order by outcome, then name
     ranking <- order(data[,'OutcomeNumeric'], data[,'Hospital.Name'])
     
-    # Return name of rank
+    # Sort by rank, return name by num requested
     data[ranking,'Hospital.Name'][get_rankRequest(num,nrow(data))]
 }
 

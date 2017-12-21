@@ -20,6 +20,16 @@ rankall <- function(outcome, num = "best") {
     
     # Sort data
     data <- data[ranking,]
+    
+    # Set state ranking for outcome
+    set_rankByState(data)
+    
+    # Return data frame for rank
+    data <- tapply(data$Hospital.Name, data$State, get_hospitalsByOutcomeRank, num)
+    
+    result <- data.frame(unlist(data))
+    
+    result
 }
 
 get_outcomeData <- function(fileName) {
@@ -48,14 +58,14 @@ is_validOutcomeResult <- function(data, col) {
 get_outcomeNumeric <- function(data, col) {
     as.numeric(data[,col])
 }
-get_rankRequest <- function(num, nrow) {
+get_hospitalsByOutcomeRank <- function(hospitals, num) {
     if (num == "best") {
-        return(1)
+        data.frame(hospitals[1])
     }
     else if (num == "worst") {
-        return(nrow)
+        data.frame(hospitals[length(hospitals)])
     }
     else {
-        num
+        data.frame(hospitals[num])
     }
 }

@@ -20,16 +20,25 @@ run_analysis <- function(dir) {
     # assign colnames to measurements
     names(measurements) <- get_featureNames()
     
-    # extract columns for means and standard deviations
+    # remove duplicate columns in measurements
+    measurements <- rm_dupCols(measurements)
     
-    # take the columns from measurements, subjects, and activies
-    # and merge into a single table
+    # select only columns we want for our final result
+    measurements <- measurements[,grep("mean()|std()", names(measurements))]
+    
+    # merge the 3 sets into a single set
+    all_data <- measurements %>% mutate(subjects = subjects, activities = activities)
     
     # reorder the columns so the subject and activity are first
+    all_data <- all_data[,c(ncol(all_data) - 1, ncol(all_data), 1:ncol(all_data) - 2)]
     
     # change the values for the activities to be descriptive
+    activity_labels <- read.table("activity_labels.txt")
+    all_data <- all_data %<% mutate(activities = activity_labels[activities, 2])
     
-    # change the column names to be descriptive
+    # change the column names to be descriptive - more so?
+    
+    # return the data set - this is temporary
     
     # create the second tidy data set that averages the values
     # for each subject and activity
@@ -41,4 +50,7 @@ load_deps <- function() {
 get_featureNames <- function() {
     features <- read.table("features.txt")
     features[,2]
+}
+rm_dupCols <- function(data) {
+    data %>% subset(., select=which(!duplicated(names(.))))
 }

@@ -1,21 +1,10 @@
-run_analysis <- function(dir) {
-    load_deps()
-    setwd(dir)
+run_analysis <- function() {
+    library(dplyr)
     
-    # load data from test set
-    subjects_test <- read.table("test/subject_test.txt")
-    activities_test <- read.table("test/y_test.txt")
-    measurements_test <- read.table("test/X_test.txt")
-    
-    # load data from train set
-    subjects_train <- read.table("train/subject_train.txt")
-    activities_train <- read.table("train/y_train.txt")
-    measurements_train <- read.table("train/X_train.txt")
-    
-    # combine each into a single table
-    subjects <- rbind(subjects_test, subjects_train)
-    activities <- rbind(activities_test, activities_train)
-    measurements <- rbind(measurements_test, measurements_train)
+    # load data
+    subjects <- get_subjects()
+    activities <- get_activities()
+    measurements <- get_measurements()
     
     # assign colnames to measurements
     names(measurements) <- get_featureNames()
@@ -24,28 +13,47 @@ run_analysis <- function(dir) {
     measurements <- rm_dupCols(measurements)
     
     # select only columns we want for our final result
-    measurements <- measurements[,grep("mean()|std()", names(measurements))]
+    measurements <- measurements[,grep("mean\\(\\)|std\\(\\)", names(measurements))]
     
-    # merge the 3 sets into a single set
-    all_data <- measurements %>% mutate(subjects = subjects, activities = activities)
+    # rename columns for subject and activity sets
+    subjects <- rename(subjects, subjects = V1)
+    activities <- rename(activities, activities = V1)
     
-    # reorder the columns so the subject and activity are first
-    all_data <- all_data[,c(ncol(all_data) - 1, ncol(all_data), 1:ncol(all_data) - 2)]
+    # merge the 3 sets
+    all_data <- cbind(subjects, activities, measurements)
     
     # change the values for the activities to be descriptive
     activity_labels <- read.table("activity_labels.txt")
-    all_data <- all_data %<% mutate(activities = activity_labels[activities, 2])
+    all_data <- all_data %>% mutate(activities = activity_labels[activities, 2])
     
-    # change the column names to be descriptive - more so?
+    # sort by subject id
+    all_data <- all_data %>% arrange(subjects)
     
-    # return the data set - this is temporary
+    # write the data to a file
+    write.csv(all_data, file = "../../measurements-tidy.csv", row.names = FALSE)
     
-    # create the second tidy data set that averages the values
-    # for each subject and activity
+    # create the second tidy data set that averages the values for each subject and activity
+    averages <- group_by(all_data, subjects, activities)
+    averages <- summarize_all(averages, funs(mean))
+    
+    # write the data to a file
+    write.csv(averages, file = "../../measurementsAvg-tidy.csv", row.names = FALSE)
 }
 
-load_deps <- function() {
-    library(dplyr)
+get_subjects <- function() {
+    subjects_test <- read.table("test/subject_test.txt")
+    subjects_train <- read.table("train/subject_train.txt")
+    rbind(subjects_test, subjects_train)
+}
+get_activities <- function() {
+    activities_test <- read.table("test/y_test.txt")
+    activities_train <- read.table("train/y_train.txt")
+    rbind(activities_test, activities_train)
+}
+get_measurements <- function() {
+    measurements_test <- read.table("test/X_test.txt")
+    measurements_train <- read.table("train/X_train.txt")
+    rbind(measurements_test, measurements_train)
 }
 get_featureNames <- function() {
     features <- read.table("features.txt")

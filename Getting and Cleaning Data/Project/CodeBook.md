@@ -5,9 +5,9 @@
 # Code Book
 ### This section contains information about the data sets in this repository.
 
-The tidy data sets produced for this project are `measurements-tidy.csv` and `measurementsAvg-tidy.csv`. The first contains the mean and standard deviation for each measurement for a single recording. The second contains the mean of each of these measurements for each subject and activity.
+The tidy data set produced for this project is titled `measurementsAvg.csv`. It contains the average mean and standard deviation for each measurement for every combination of subject and activity.
 
-The variables for each data set are as follows:
+The variables for the data set are as follows:
 
 1. subjects - The subject identifier
 1. activities - The activity being performed
@@ -80,7 +80,7 @@ The variables for each data set are as follows:
 1. fBodyBodyGyroJerkMag-mean()
 1. fBodyBodyGyroJerkMag-std()
 
-#### At a high level, the following steps were taken to produce the tidy data sets:
+#### At a high level, the following steps were taken to produce the tidy data set:
 
 1. Merge the test and train data sets for the subjects, activities, and measurements data.
 1. Assign variable names to the measurements data using the features.txt file from the original data.
@@ -88,10 +88,9 @@ The variables for each data set are as follows:
 1. Select from the measurements data only the mean and standard deviation measurements.
 1. Merge the subjects, activities and measurements data sets.
 1. Sort by the subject identifier.
-1. Write this data frame to a file - this is the first set.
-1. Create another data set that groups the first by subject and activity.
+1. Use this data set to create another data set that groups the first by subject and activity.
 1. Use `summarize_all` to apply the mean function to all other columns.
-1. Write the resulting data frame to a file - this is the second set.
+1. Write the resulting data frame to a file.
 
 # Study Design
 ### This section contains information from the original study and original data, from which the tidy data sets were created. It was copied from the README for the original data set.

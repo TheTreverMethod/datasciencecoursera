@@ -29,15 +29,12 @@ run_analysis <- function() {
     # sort by subject id
     all_data <- all_data %>% arrange(subjects)
     
-    # write the data to a file
-    write.csv(all_data, file = "../../measurements-tidy.csv", row.names = FALSE)
-    
     # create the second tidy data set that averages the values for each subject and activity
     averages <- group_by(all_data, subjects, activities)
     averages <- summarize_all(averages, funs(mean))
     
     # write the data to a file
-    write.csv(averages, file = "../../measurementsAvg-tidy.csv", row.names = FALSE)
+    write.csv(averages, file = "../measurementsAvg.csv", row.names = FALSE)
 }
 
 get_subjects <- function() {

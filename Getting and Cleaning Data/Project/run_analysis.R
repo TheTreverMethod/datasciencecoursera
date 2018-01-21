@@ -33,8 +33,8 @@ run_analysis <- function() {
     averages <- group_by(all_data, subjects, activities)
     averages <- summarize_all(averages, funs(mean))
     
-    # write the data to a file
-    write.csv(averages, file = "../measurementsAvg.csv", row.names = FALSE)
+    # return the data
+    averages
 }
 
 get_subjects <- function() {

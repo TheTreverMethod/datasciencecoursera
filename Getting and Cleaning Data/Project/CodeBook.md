@@ -5,7 +5,7 @@
 # Code Book
 ### This section contains information about the data sets in this repository.
 
-The tidy data set produced for this project is titled `measurementsAvg.csv`. It contains the average mean and standard deviation for each measurement for every combination of subject and activity.
+The tidy data set produced for this project is titled `measurements-avg.csv`. It contains the average mean and standard deviation for each measurement for every combination of subject and activity.
 
 The variables for the data set are as follows:
 

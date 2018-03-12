@@ -23,7 +23,7 @@ plot5 <- function() {
   totals <- tapply(baltimore_vehicles$Emissions, baltimore_vehicles$year, sum)
   
   # plot the data
-  par(mfrow=c(1,2), mar=c(2,2,6,2))
+  par(mfrow=c(1,2), mar=c(2,2,4,2), oma=c(0,0,2,0))
   barplot(totals, main="Total Emissions")
   with(baltimore_vehicles, boxplot(Emissions ~ year, ylim=c(0,5), main="All Records"))
   title(main="Vehicle Emissions in Baltimore", outer=T)

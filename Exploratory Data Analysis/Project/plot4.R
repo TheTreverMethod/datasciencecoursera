@@ -15,9 +15,10 @@ plot4 <- function() {
   totals <- tapply(nei_coal$Emissions, nei_coal$year, sum)
   
   # plot the data
-  par(mfrow=c(1,2), mar=c(2,2,2,2))
+  par(mfrow=c(1,2), mar=c(2,2,4,2), oma=c(0,0,2,0))
   barplot(totals, main='Total Emissions')
   with(nei_coal, boxplot(Emissions ~ year, ylim=c(0,15), main="All Records"))
+  title(main="Coal Combustion Emissions", outer=T)
   
   # create the png
   setwd('../../datasciencecoursera/Exploratory Data Analysis/Project')

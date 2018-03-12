@@ -1,7 +1,6 @@
 plot3 <- function() {
   # set up environment
   library(ggplot2)
-  setwd('../../../datasciencecoursera-datasets/pm25')
   
   # load the data
   nei <- readRDS("summarySCC_PM25.rds")
@@ -13,7 +12,6 @@ plot3 <- function() {
   g + geom_bar(stat='identity') + facet_grid(.~type)
   
   # create the png
-  setwd('../../datasciencecoursera/Exploratory Data Analysis/Project')
   dev.copy(png, file = 'plot3.png')
   dev.off()
 }

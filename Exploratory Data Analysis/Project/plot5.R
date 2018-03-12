@@ -1,7 +1,6 @@
 plot5 <- function() {
   # set up environment
   library(ggplot2)
-  setwd('../../../datasciencecoursera-datasets/pm25')
   
   # load the data
   nei <- readRDS("summarySCC_PM25.rds")
@@ -29,7 +28,6 @@ plot5 <- function() {
   title(main="Vehicle Emissions in Baltimore", outer=T)
   
   # create the png
-  setwd('../../datasciencecoursera/Exploratory Data Analysis/Project')
   dev.copy(png, file = 'plot5.png')
   dev.off()
 }

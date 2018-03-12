@@ -11,7 +11,7 @@ plot4 <- function() {
   coal_scc <- subset(scc, EI.Sector == 'Fuel Comb - Comm/Institutional - Coal' |
                    EI.Sector == 'Fuel Comb - Electric Generation - Coal' |
                    EI.Sector == 'Fuel Comb - Industrial Boilers, ICEs - Coal' )$SCC
-  nei_coal <- subset(nei, nei$SCC %in% coal_scc)
+  nei_coal <- subset(nei, SCC %in% coal_scc)
   totals <- tapply(nei_coal$Emissions, nei_coal$year, sum)
   
   # plot the data

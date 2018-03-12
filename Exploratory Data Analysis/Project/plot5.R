@@ -8,7 +8,7 @@ plot5 <- function() {
   scc <- readRDS("Source_Classification_Code.rds")
   baltimore <- subset(nei, fips == '24510')
   
-  # reduce the data to coal combustion-related sources
+  # reduce the data to vehicle related sources
   vehicles_scc <- subset(scc, EI.Sector == 'Mobile - Aircraft' |
                        EI.Sector == 'Mobile - Commercial Marine Vessels' |
                        EI.Sector == 'Mobile - Locomotives' |
@@ -19,7 +19,7 @@ plot5 <- function() {
                        EI.Sector == 'Mobile - On-Road Diesel Light Duty Vehicles' |
                        EI.Sector == 'Mobile - On-Road Gasoline Heavy Duty Vehicles' |
                        EI.Sector == 'Mobile - On-Road Gasoline Light Duty Vehicles' )$SCC
-  baltimore_vehicles <- subset(baltimore, baltimore$SCC %in% vehicles_scc)
+  baltimore_vehicles <- subset(baltimore, SCC %in% vehicles_scc)
   totals <- tapply(baltimore_vehicles$Emissions, baltimore_vehicles$year, sum)
   
   # plot the data
